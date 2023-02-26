@@ -19,8 +19,8 @@ local FindPartOnRayWithIgnoreList = workspace.FindPartOnRayWithIgnoreList
 local WorldToViewportPoint = Camera.WorldToViewportPoint
 
 local SelfModules = {
-    DefaultConfig = loadstring(game:HttpGet("https://raw.githubusercontent.com/RegularVynixu/Utilities/main/Doors%20Entity%20Spawner/DefaultConfig.lua"))(),
-    Functions = loadstring(game:HttpGet("https://raw.githubusercontent.com/RegularVynixu/Utilities/main/Functions.lua"))(),
+    DefaultConfig = loadstring(game:HttpGet("https://raw.githubusercontent.com/HollowedOutMods/EntitySpawnerFork/main/DefaultConfig.lua"))(),
+    Functions = loadstring(game:HttpGet("https://raw.githubusercontent.com/HollowedOutMods/EntitySpawnerFork/main/Functions.lua"))(),
 }
 local ModuleScripts = {
     ModuleEvents = require(ReSt.ClientModules.Module_Events),
