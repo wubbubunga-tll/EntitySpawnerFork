@@ -139,14 +139,14 @@ Spawner.runEntity = function(entityTable)
     local nodes = {}
 
     for _, room in next, workspace.Rooms:GetChildren() do
-        local pathfindNodes = game.Workspace.MonsterMove2Parts
+        local pathfindNodes = game.Workspace:FindFirstChild("MonsterMove2Parts")
         
         if pathfindNodes then
             pathfindNodes = pathfindNodes:GetChildren()
         else
             local fakeNode = Instance.new("Part")
             fakeNode.Name = "1"
-            fakeNode.CFrame = room:WaitForChild("Door").CFrame - Vector3.new(0, room.Door.Size.Y / 2, 0)
+            fakeNode.CFrame = room:WaitForChild("RoomExit").CFrame - Vector3.new(0, room.RoomExit.Size.Y / 2, 0)
 
             pathfindNodes = {fakeNode}
         end
@@ -163,7 +163,7 @@ Spawner.runEntity = function(entityTable)
     -- Spawn
 
     local entityModel = entityTable.Model:Clone()
-    local startNodeIndex = #nodes
+    local startNodeIndex = entityTable.Config.BackwardsMovement and #nodes or 1
     local startNodeOffset = entityTable.Config.BackwardsMovement and -50 or 50
 
     EntityConnections[entityModel] = {}
@@ -172,21 +172,6 @@ Spawner.runEntity = function(entityTable)
     entityModel:PivotTo(nodes[startNodeIndex].CFrame * CFrame.new(0, 0, startNodeOffset) + Vector3.new(0, 3.5 + entityTable.Config.HeightOffset, 0))
     entityModel.Parent = workspace
     task.spawn(entityTable.Debug.OnEntitySpawned)
-
-    -- Mute entity on spawn
-
-    if CG:FindFirstChild("JumpscareGui") or (Plr.PlayerGui.MainUI.Death.HelpfulDialogue.Visible and not Plr.PlayerGui.MainUI.DeathPanelDead.Visible) then
-        warn("on death screen, mute entity")
-
-        for _, v in next, entityModel:GetDescendants() do
-            if v.ClassName == "Sound" and v.Playing then
-                v:Stop()
-            end
-        end
-    end
-
-    -- Flickering
-
 
 
     -- Movement
@@ -210,13 +195,13 @@ Spawner.runEntity = function(entityTable)
                         enteredRooms[#enteredRooms + 1] = room
                         task.spawn(entityTable.Debug.OnEntityEnteredRoom, room)
 
+                        -- Break lights
                         
 
                         break
                     end
                 end
             end
-
 
 
             -- Player in sight
@@ -229,10 +214,21 @@ Spawner.runEntity = function(entityTable)
                 if onScreen then
                     task.spawn(entityTable.Debug.OnLookAtEntity)
                 end
-
+                local Hiding = false
+                coroutine.wrap(function()
+                    task.wait(0.05)
+                    for i, v in pairs(game.Workspace.Rooms:GetDescendants()) do
+                        if v.Name == "PersonHidingInside" then
+                            if v.Value == game.Players.LocalPlayer.Name then
+                                Hiding = true
+                            end
+                        end
+                    end
+                end)()
+                
                 -- Kill player
 
-                if entityTable.Config.CanKill and not Char:GetAttribute("IsDead") and not Char:GetAttribute("Invincible") and not Char:GetAttribute("Hiding") and (getPlayerRoot().Position - entityModel.PrimaryPart.Position).Magnitude <= entityTable.Config.KillRange then
+                if entityTable.Config.CanKill and not Hiding and (getPlayerRoot().Position - entityModel.PrimaryPart.Position).Magnitude <= entityTable.Config.KillRange then
                     task.spawn(function()
                         Char:SetAttribute("IsDead", true)
 
