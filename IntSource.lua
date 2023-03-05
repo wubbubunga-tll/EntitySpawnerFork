@@ -139,7 +139,7 @@ Spawner.runEntity = function(entityTable)
     local nodes = {}
 
     for _, room in next, workspace.Rooms:GetChildren() do
-        local pathfindNodes = nil
+        local pathfindNodes = game.Workspace.MonsterMove2Parts
         
         if pathfindNodes then
             pathfindNodes = pathfindNodes:GetChildren()
