@@ -1,7 +1,7 @@
 -- Services
 
-local Players = game:GetService("Players")
-local ReSt = game:GetService("ReplicatedStorage")
+local Players = game.Players
+local ReSt = game.ReplicatedStorage
 local RS = game:GetService("RunService")
 local TS = game:GetService("TweenService")
 local CG = game:GetService("CoreGui")
