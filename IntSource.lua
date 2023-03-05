@@ -135,10 +135,7 @@ end
 
 Spawner.runEntity = function(entityTable)
     -- Nodes
-
     local nodes = {}
-
-    
     for _, room in next, workspace.Rooms:GetChildren() do
         local pathfindNodes = nil
         
@@ -148,14 +145,11 @@ Spawner.runEntity = function(entityTable)
             local fakeNode = Instance.new("Part")
             fakeNode.Name = "1"
             fakeNode.CFrame = room:WaitForChild("Door").CFrame - Vector3.new(0, room.Door.Size.Y / 2, 0)
-            fakeNode.Parent = nodesPath
             pathfindNodes = {fakeNode}
         end
-
         table.sort(pathfindNodes, function(a, b)
             return tonumber(a.Name) < tonumber(b.Name)
         end)
-
         for _, node in next, pathfindNodes do
             nodes[#nodes + 1] = node
         end
