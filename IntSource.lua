@@ -232,44 +232,12 @@ Spawner.runEntity = function(entityTable)
                     task.spawn(function()
                         Char:SetAttribute("IsDead", true)
 
-                        -- Mute entity
-
-                        warn("mute entity")
-
-                        for _, v in next, entityModel:GetDescendants() do
-                            if v.ClassName == "Sound" and v.Playing then
-                                v:Stop()
-                            end
-                        end
-
-                        -- Jumpscare
-                        
-                        if entityTable.Config.Jumpscare[1] then
-                            Spawner.runJumpscare(entityTable.Config.Jumpscare[2])
-                        end
 
                         -- Death handling
                         
                         task.spawn(entityTable.Debug.OnDeath)
                         
                         
-                        -- Unmute entity
-
-                        task.spawn(function()
-                            repeat task.wait() until Plr.PlayerGui.MainUI.DeathPanelDead.Visible
-
-                            warn("unmute entity:", entityModel)
-
-                            for _, v in next, entityModel:GetDescendants() do
-                                if v.ClassName == "Sound" then
-                                    local oldVolume = v.Volume
-                                
-                                    v.Volume = 0
-                                    v:Play()
-                                    TS:Create(v, TweenInfo.new(2), {Volume = oldVolume}):Play()
-                                end
-                            end
-                        end)
                     end)
                 end
             end
