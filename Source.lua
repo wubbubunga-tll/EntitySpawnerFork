@@ -191,9 +191,9 @@ Spawner.runEntity = function(entityTable)
     -- Flickering
 
     if entityTable.Config.FlickerLights[1] then
-        for i, v in pairs(workspace.CurrentRooms:GetChildren()) do
-            ModuleScripts.ModuleEvents.flicker(workspace.CurrentRooms[v], entityTable.Config.FlickerLights[2])
-        end
+        ModuleScripts.ModuleEvents.flicker(workspace.CurrentRooms[game.ReplicatedStorage.GameData.LatestRoom.Value], entityTable.Config.FlickerLights[2])
+        ModuleScripts.ModuleEvents.flicker(workspace.CurrentRooms[game.ReplicatedStorage.GameData.LatestRoom.Value - 1], entityTable.Config.FlickerLights[2])
+        ModuleScripts.ModuleEvents.flicker(workspace.CurrentRooms[game.ReplicatedStorage.GameData.LatestRoom.Value - 2], entityTable.Config.FlickerLights[2])
     end
 
     -- Movement
