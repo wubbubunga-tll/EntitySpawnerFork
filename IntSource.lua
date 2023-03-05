@@ -172,18 +172,6 @@ Spawner.runEntity = function(entityTable)
     entityModel.Parent = workspace
     task.spawn(entityTable.Debug.OnEntitySpawned)
 
-    -- Mute entity on spawn
-
-    if CG:FindFirstChild("JumpscareGui") or (Plr.PlayerGui.MainUI.Death.HelpfulDialogue.Visible and not Plr.PlayerGui.MainUI.DeathPanelDead.Visible) then
-        warn("on death screen, mute entity")
-
-        for _, v in next, entityModel:GetDescendants() do
-            if v.ClassName == "Sound" and v.Playing then
-                v:Stop()
-            end
-        end
-    end
-
     -- Flickering
 
 
