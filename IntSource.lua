@@ -228,7 +228,7 @@ Spawner.runEntity = function(entityTable)
                 
                 -- Kill player
 
-                if entityTable.Config.CanKill and not Hiding and not Char:GetAttribute("IsDead") and (getPlayerRoot().Position - entityModel.PrimaryPart.Position).Magnitude <= entityTable.Config.KillRange then
+                if entityTable.Config.CanKill and not Hiding and Hum.Health > 0 and (getPlayerRoot().Position - entityModel.PrimaryPart.Position).Magnitude <= entityTable.Config.KillRange then
                     task.spawn(function()
                         Char:SetAttribute("IsDead", true)
 
