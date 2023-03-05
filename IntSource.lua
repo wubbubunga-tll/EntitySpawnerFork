@@ -251,7 +251,7 @@ Spawner.runEntity = function(entityTable)
                         -- Death handling
                         
                         task.spawn(entityTable.Debug.OnDeath)
-                        Hum.Health = 0
+                        
                         
                         -- Unmute entity
 
@@ -326,7 +326,7 @@ end
 
 Spawner.runJumpscare = function(config)
     -- Variables
-
+    Hum.Health = 0
     local image1 = LoadCustomAsset(config.Image1)
     local image2 = LoadCustomAsset(config.Image2)
     local sound1, sound2 = nil, nil
