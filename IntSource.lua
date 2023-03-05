@@ -137,17 +137,10 @@ Spawner.runEntity = function(entityTable)
     -- Nodes
 
     local nodes = {}
-    local nodesCheck = workspace:FindFirstChild("CustomNodes")
-    local nodesPath = nil
-    if nodesCheck ~= nil then
-        nodesPath = game.workspace.CustomNodes
-    else
-        nodesPath = Instance.new("Folder")
-        nodesPath.Name = "CustomNodes"
-        nodesPath.Parent = game.Workspace
-    end
+
+    
     for _, room in next, workspace.Rooms:GetChildren() do
-        local pathfindNodes = nodesPath
+        local pathfindNodes = nil
         
         if pathfindNodes then
             pathfindNodes = pathfindNodes:GetChildren()
