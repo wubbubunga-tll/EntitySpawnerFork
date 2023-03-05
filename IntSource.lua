@@ -214,10 +214,21 @@ Spawner.runEntity = function(entityTable)
                 if onScreen then
                     task.spawn(entityTable.Debug.OnLookAtEntity)
                 end
-
+                local Hiding = false
+                coroutine.wrap(function()
+                    task.wait(0.05)
+                    for i, v in pairs(game.Workspace.Rooms:GetDescendants()) do
+                        if v.Name == "PersonHidingInside" then
+                            if v.Value == game.Players.LocalPlayer.Name then
+                                Hiding = true
+                            end
+                        end
+                    end
+                end)()
+                
                 -- Kill player
 
-                if entityTable.Config.CanKill and not Char:GetAttribute("IsDead") and not Char:GetAttribute("Invincible") and not Char:GetAttribute("Hiding") and (getPlayerRoot().Position - entityModel.PrimaryPart.Position).Magnitude <= entityTable.Config.KillRange then
+                if entityTable.Config.CanKill and not Hiding and (getPlayerRoot().Position - entityModel.PrimaryPart.Position).Magnitude <= entityTable.Config.KillRange then
                     task.spawn(function()
                         Char:SetAttribute("IsDead", true)
 
