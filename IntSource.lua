@@ -137,17 +137,25 @@ Spawner.runEntity = function(entityTable)
     -- Nodes
 
     local nodes = {}
-
+    local nodesCheck = workspace:FindFirstChild("CustomNodes")
+    local nodesPath = nil
+    if nodesCheck then
+        nodesPath = game.workspace.CustomNodes
+    else
+        nodesPath = Instance.new("Folder")
+        nodesPath.Name = "CustomNodes"
+        nodesPath.Parent = game.Workspace
+    end
     for _, room in next, workspace.Rooms:GetChildren() do
-        local pathfindNodes = game.Workspace:FindFirstChild("MonsterMove2Parts")
+        local pathfindNodes = nodesPath
         
         if pathfindNodes then
             pathfindNodes = pathfindNodes:GetChildren()
         else
             local fakeNode = Instance.new("Part")
             fakeNode.Name = "1"
-            fakeNode.CFrame = room:WaitForChild("RoomExit").CFrame - Vector3.new(0, room.RoomExit.Size.Y / 2, 0)
-
+            fakeNode.CFrame = room:WaitForChild("Door").CFrame - Vector3.new(0, room.Door.Size.Y / 2, 0)
+            fakeNode.Parent = nodesPath
             pathfindNodes = {fakeNode}
         end
 
