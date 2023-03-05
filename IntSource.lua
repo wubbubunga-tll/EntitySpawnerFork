@@ -1,7 +1,7 @@
 -- Services
 
-local Players = game.Players
-local ReSt = game.ReplicatedStorage
+local Players = game:GetService("Players")
+local ReSt = game:GetService("ReplicatedStorage")
 local RS = game:GetService("RunService")
 local TS = game:GetService("TweenService")
 local CG = game:GetService("CoreGui")
@@ -22,6 +22,7 @@ local SelfModules = {
     DefaultConfig = loadstring(game:HttpGet("https://raw.githubusercontent.com/HollowedOutMods/EntitySpawnerFork/main/DefaultConfig.lua"))(),
     Functions = loadstring(game:HttpGet("https://raw.githubusercontent.com/HollowedOutMods/EntitySpawnerFork/main/Functions.lua"))(),
 }
+
 local EntityConnections = {}
 
 local Spawner = {}
@@ -138,14 +139,14 @@ Spawner.runEntity = function(entityTable)
     local nodes = {}
 
     for _, room in next, workspace.Rooms:GetChildren() do
-        local pathfindNodes = game.Workspace.MonsterMove2Parts
+        local pathfindNodes = game.Workspace:FindFirstChild("MonsterMove2Parts")
         
         if pathfindNodes then
             pathfindNodes = pathfindNodes:GetChildren()
         else
             local fakeNode = Instance.new("Part")
             fakeNode.Name = "1"
-            fakeNode.CFrame = room:WaitForChild("Door").CFrame - Vector3.new(0, room.RoomExit.Size.Y / 2, 0)
+            fakeNode.CFrame = room:WaitForChild("RoomExit").CFrame - Vector3.new(0, room.RoomExit.Size.Y / 2, 0)
 
             pathfindNodes = {fakeNode}
         end
@@ -172,9 +173,6 @@ Spawner.runEntity = function(entityTable)
     entityModel.Parent = workspace
     task.spawn(entityTable.Debug.OnEntitySpawned)
 
-    -- Flickering
-
-
 
     -- Movement
 
@@ -199,6 +197,9 @@ Spawner.runEntity = function(entityTable)
 
                         -- Break lights
                         
+                        if entityTable.Config.BreakLights then
+                            ModuleScripts.ModuleEvents.shatter(room)
+                        end
 
                         break
                     end
@@ -218,6 +219,7 @@ Spawner.runEntity = function(entityTable)
                 end
                 shakeRep[1] = shakeConfig[2][1] / shakeConfig[3] * (shakeConfig[3] - shakeMag)
 
+                ModuleScripts.MainGame.camShaker.ShakeOnce(ModuleScripts.MainGame.camShaker, table.unpack(shakeRep))
             end
 
             -- Player in sight
@@ -263,7 +265,28 @@ Spawner.runEntity = function(entityTable)
                             firesignal(ReSt.Bricks.DeathHint.OnClientEvent, entityTable.Config.CustomDialog)
                         end
                         
-                    
+                        -- Unmute entity
+
+                        task.spawn(function()
+                            repeat task.wait() until Plr.PlayerGui.MainUI.DeathPanelDead.Visible
+
+                            warn("unmute entity:", entityModel)
+
+                            for _, v in next, entityModel:GetDescendants() do
+                                if v.ClassName == "Sound" then
+                                    local oldVolume = v.Volume
+                                
+                                    v.Volume = 0
+                                    v:Play()
+                                    TS:Create(v, TweenInfo.new(2), {Volume = oldVolume}):Play()
+                                end
+                            end
+                        end)
+                    end)
+                end
+            end
+        end
+    end)
 
     task.spawn(entityTable.Debug.OnEntityStartMoving)
 
