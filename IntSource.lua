@@ -263,28 +263,7 @@ Spawner.runEntity = function(entityTable)
                             firesignal(ReSt.Bricks.DeathHint.OnClientEvent, entityTable.Config.CustomDialog)
                         end
                         
-                        -- Unmute entity
-
-                        task.spawn(function()
-                            repeat task.wait() until Plr.PlayerGui.MainUI.DeathPanelDead.Visible
-
-                            warn("unmute entity:", entityModel)
-
-                            for _, v in next, entityModel:GetDescendants() do
-                                if v.ClassName == "Sound" then
-                                    local oldVolume = v.Volume
-                                
-                                    v.Volume = 0
-                                    v:Play()
-                                    TS:Create(v, TweenInfo.new(2), {Volume = oldVolume}):Play()
-                                end
-                            end
-                        end)
-                    end)
-                end
-            end
-        end
-    end)
+                    
 
     task.spawn(entityTable.Debug.OnEntityStartMoving)
 
