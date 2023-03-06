@@ -126,7 +126,7 @@ Spawner.createEntity = function(config)
                     OnEntityStartMoving = function() end,
                     OnEntityFinishedRebound = function() end,
                     OnEntityEnteredRoom = function() end,
-                    OnLookAtEntity = function() end,
+                    OnLookAtEntity = function() end,F
                     OnDeath = function() end
                 }
             }
@@ -282,7 +282,7 @@ Spawner.runEntity = function(entityTable)
                         ReSt.GameStats["Player_".. Plr.Name].Total.DeathCause.Value = entityModel.Name
                         
                         if #entityTable.Config.CustomDialog > 0 then
-                            firesignal(ReSt.Bricks.DeathHint.OnClientEvent, entityTable.Config.CustomDialog)
+                            firesignal(ReSt.EntityInfo.DeathHint.OnClientEvent, entityTable.Config.CustomDialog, entityTable.Config.Color)
                         end
                         
                         -- Unmute entity
