@@ -126,7 +126,7 @@ Spawner.createEntity = function(config)
                     OnEntityStartMoving = function() end,
                     OnEntityFinishedRebound = function() end,
                     OnEntityEnteredRoom = function() end,
-                    OnLookAtEntity = function() end,F
+                    OnLookAtEntity = function() end,
                     OnDeath = function() end
                 }
             }
