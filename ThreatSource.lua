@@ -49,6 +49,7 @@ function dragEntity(entityModel, pos, speed)
     end
 
     entityConnections.movementNode = RS.Stepped:Connect(function(_, step)
+        if Drag then 
         if entityModel.Parent and not entityModel:GetAttribute("NoAI") then
             local rootPos = entityModel.PrimaryPart.Position
             local diff = Vector3.new(pos.X, pos.Y, pos.Z) - rootPos
@@ -58,6 +59,9 @@ function dragEntity(entityModel, pos, speed)
             else
                 entityConnections.movementNode:Disconnect()
             end
+        end
+        else
+            entityConnections.movementNode:Disconnect()
         end
     end)
 
