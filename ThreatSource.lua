@@ -302,9 +302,6 @@ if typeof(entityModel) == "Instance" and entityModel.ClassName == "Model" then
         entityModel.PrimaryPart.Anchored = true
 
         -- Set the name of the model
-        if entityModel.Name then
-            entityModel.Name = "ThreatJumpscare"
-        end
 
         entityModel:SetAttribute("IsCustomEntity", true)
         entityModel:SetAttribute("NoAI", false)
@@ -332,6 +329,7 @@ local lookAtTween = TweenService:Create(camara, TweenInfo.new(1), {CFrame = CFra
 lookAtTween:Play()
 
 -- Wait for the tween to finish
+entityModel.Jumpscare:Play()
 lookAtTween.Completed:Wait()
 task.wait(0.1)
 humanoid.Health = 0
