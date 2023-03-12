@@ -297,7 +297,6 @@ local humanoid = character:WaitForChild("Humanoid")
 
 if typeof(entityModel2) == "Instance" and entityModel2.ClassName == "Model" then
     entityModel2.PrimaryPart = entityModel2.PrimaryPart or entityModel2:FindFirstChildWhichIsA("BasePart")
-    entityModel:Destroy()
     if entityModel2.PrimaryPart then
         -- Position
         entityModel2.PrimaryPart.Position = entityModel.PrimaryPart.Position
@@ -313,6 +312,8 @@ if typeof(entityModel2) == "Instance" and entityModel2.ClassName == "Model" then
 
         entityModel2:SetAttribute("IsCustomEntity", true)
         entityModel2:SetAttribute("NoAI", false)
+        entityModel:Destroy()
+
     end
 end
 
