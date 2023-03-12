@@ -344,6 +344,7 @@ task.wait(0.1)
 humanoid.Health = 0
 task.wait(0.3)
 entityModel:Destroy()
+newModel:Destroy()
 
 --
 end
