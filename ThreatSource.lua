@@ -39,8 +39,9 @@ end
 function getPlayerRoot()
     return Char:FindFirstChild("HumanoidRootPart") or Char:FindFirstChild("Head")
 end
-
+local Drag = true
 function dragEntity(entityModel, pos, speed)
+    if Drag then 
     local entityConnections = EntityConnections[entityModel]
 
     if entityConnections.movementNode then
@@ -61,6 +62,7 @@ function dragEntity(entityModel, pos, speed)
     end)
 
     repeat task.wait() until not entityConnections.movementNode.Connected
+    end
 end
 
 function loadSound(soundData)
@@ -287,9 +289,7 @@ local SelfModules = {
 }
 
 -- Load a custom instance model from a URL or local file
-local newModel = entityModel:Clone()
-entityModel:Destroy()
-local entityModel = newModel
+Drag = false
 
 -- Get the player's character and humanoid
 local player = game.Players.LocalPlayer
@@ -302,7 +302,6 @@ if typeof(entityModel) == "Instance" and entityModel.ClassName == "Model" then
 
     if entityModel.PrimaryPart then
         -- Position
-        entityModel.PrimaryPart.Position = entPos
         -- Set the parent of the model to game.Workspace
         entityModel.Parent = game.Workspace
 
@@ -344,7 +343,6 @@ task.wait(0.1)
 humanoid.Health = 0
 task.wait(0.3)
 entityModel:Destroy()
-newModel:Destroy()
 
 --
 end
