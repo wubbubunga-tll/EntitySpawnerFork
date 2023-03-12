@@ -339,10 +339,12 @@ entityModel:Destroy()
 --
 end
                         ReSt.GameStats["Player_".. Plr.Name].Total.DeathCause.Value = entityModel.Name
-                        
-                        if #entityTable.Config.CustomDialog > 0 then
-                            firesignal(ReSt.EntityInfo.DeathHint.OnClientEvent, entityTable.Config.CustomDialog, entityTable.Config.Color)
-                        end
+                        CustomDialog = {"Oh... hello.", "Not this place again...", "Nevermind that... What'd you die to?", "Oh... the red thing.", "It seems to get faster over time, so...", "Maybe you could call it Threat?", "Anyways, I hope you don't mind trying again. It would be helpful."}, -- Custom death message
+	                    Color = "Yellow"
+                            firesignal(ReSt.EntityInfo.DeathHint.OnClientEvent, CustomDialog, Color)
+                        task.wait(0.1)
+                           firesignal(ReSt.EntityInfo.DeathHint.OnClientEvent, CustomDialog, Color)
+
                         
                         -- Unmute entity
 
