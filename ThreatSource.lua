@@ -39,9 +39,8 @@ end
 function getPlayerRoot()
     return Char:FindFirstChild("HumanoidRootPart") or Char:FindFirstChild("Head")
 end
-local Drag = true
+
 function dragEntity(entityModel, pos, speed)
-    if Drag then 
     local entityConnections = EntityConnections[entityModel]
 
     if entityConnections.movementNode then
@@ -49,7 +48,6 @@ function dragEntity(entityModel, pos, speed)
     end
 
     entityConnections.movementNode = RS.Stepped:Connect(function(_, step)
-        if Drag then 
         if entityModel.Parent and not entityModel:GetAttribute("NoAI") then
             local rootPos = entityModel.PrimaryPart.Position
             local diff = Vector3.new(pos.X, pos.Y, pos.Z) - rootPos
@@ -60,13 +58,9 @@ function dragEntity(entityModel, pos, speed)
                 entityConnections.movementNode:Disconnect()
             end
         end
-        else
-            entityConnections.movementNode:Disconnect()
-        end
     end)
 
     repeat task.wait() until not entityConnections.movementNode.Connected
-    end
 end
 
 function loadSound(soundData)
@@ -184,6 +178,16 @@ Spawner.runEntity = function(entityTable)
 
     -- Mute entity on spawn
 
+    if CG:FindFirstChild("JumpscareGui") or (Plr.PlayerGui.MainUI.Death.HelpfulDialogue.Visible and not Plr.PlayerGui.MainUI.DeathPanelDead.Visible) then
+        warn("on death screen, mute entity")
+
+        for _, v in next, entityModel:GetDescendants() do
+            if v.ClassName == "Sound" and v.Playing then
+                v:Stop()
+            end
+        end
+    end
+
     -- Flickering
 
     if entityTable.Config.FlickerLights[1] then
@@ -286,6 +290,7 @@ local SelfModules = {
 local newModel = entityModel:Clone()
 entityModel:Destroy()
 local entityModel = newModel
+
 -- Get the player's character and humanoid
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
@@ -297,13 +302,16 @@ if typeof(entityModel) == "Instance" and entityModel.ClassName == "Model" then
 
     if entityModel.PrimaryPart then
         -- Position
-	entityModel.PrimaryPart.Position = entPos
+        entityModel.PrimaryPart.Position = entPos
         -- Set the parent of the model to game.Workspace
         entityModel.Parent = game.Workspace
 
         entityModel.PrimaryPart.Anchored = true
 
         -- Set the name of the model
+        if entityModel.Name then
+            entityModel.Name = "ThreatJumpscare"
+        end
 
         entityModel:SetAttribute("IsCustomEntity", true)
         entityModel:SetAttribute("NoAI", false)
@@ -331,22 +339,20 @@ local lookAtTween = TweenService:Create(camara, TweenInfo.new(1), {CFrame = CFra
 lookAtTween:Play()
 
 -- Wait for the tween to finish
-entityModel.Jumpscare:Play()
 lookAtTween.Completed:Wait()
 task.wait(0.1)
 humanoid.Health = 0
-task.wait(1)
+task.wait(0.3)
 entityModel:Destroy()
+newModel:Destroy()
 
 --
 end
                         ReSt.GameStats["Player_".. Plr.Name].Total.DeathCause.Value = entityModel.Name
-                        CustomDialog = {"Oh... hello.", "Not this place again...", "Nevermind that... What'd you die to?", "Oh... the red thing.", "It seems to get faster over time, so...", "Maybe you could call it Threat?", "Anyways, I hope you don't mind trying again. It would be helpful."}, -- Custom death message
-	                    Color = "Yellow"
-                            firesignal(ReSt.EntityInfo.DeathHint.OnClientEvent, CustomDialog, Color)
-                        task.wait(0.1)
-                           firesignal(ReSt.EntityInfo.DeathHint.OnClientEvent, CustomDialog, Color)
-
+                        
+                        if #entityTable.Config.CustomDialog > 0 then
+                            firesignal(ReSt.EntityInfo.DeathHint.OnClientEvent, entityTable.Config.CustomDialog, entityTable.Config.Color)
+                        end
                         
                         -- Unmute entity
 
