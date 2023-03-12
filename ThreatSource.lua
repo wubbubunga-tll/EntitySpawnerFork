@@ -287,8 +287,9 @@ local SelfModules = {
 }
 
 -- Load a custom instance model from a URL or local file
+local newModel = entityModel:Clone()
 entityModel:Destroy()
-local entityModel = SelfModules.Functions.LoadCustomInstance("https://github.com/HollowedOutMods/Doors/blob/main/threat.rbxm?raw=true")
+local entityModel = newModel
 
 -- Get the player's character and humanoid
 local player = game.Players.LocalPlayer
@@ -341,6 +342,8 @@ lookAtTween:Play()
 lookAtTween.Completed:Wait()
 task.wait(0.1)
 humanoid.Health = 0
+task.wait(0.3)
+entityModel:Destroy()
 
 --
 end
