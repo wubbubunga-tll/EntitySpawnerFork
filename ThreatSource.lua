@@ -283,8 +283,9 @@ local SelfModules = {
 }
 
 -- Load a custom instance model from a URL or local file
-Drag = false
-
+local newModel = entityModel:Clone()
+entityModel:Destroy()
+local entityModel = newModel
 -- Get the player's character and humanoid
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
@@ -296,6 +297,7 @@ if typeof(entityModel) == "Instance" and entityModel.ClassName == "Model" then
 
     if entityModel.PrimaryPart then
         -- Position
+	entityModel.PrimaryPart.Position = entPos
         -- Set the parent of the model to game.Workspace
         entityModel.Parent = game.Workspace
 
