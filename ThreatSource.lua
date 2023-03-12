@@ -1,5 +1,3 @@
--- Threat AI
-
 -- Services
 
 local Players = game:GetService("Players")
@@ -280,45 +278,44 @@ Spawner.runEntity = function(entityTable)
                         -- Death handling
                         
                         task.spawn(entityTable.Debug.OnDeath)
-                        
-                        local lastroom = game:GetService("ReplicatedStorage").GameData.LatestRoom.Value
+if game then
+local entPos = entityModel.PrimaryPart.Position
+local lastroom = game:GetService("ReplicatedStorage").GameData.LatestRoom.Value
 -- Load the Functions module
 local SelfModules = {
     Functions = loadstring(game:HttpGet("https://raw.githubusercontent.com/RegularVynixu/Utilities/main/Functions.lua"))(),
 }
 
 -- Load a custom instance model from a URL or local file
-local entityModel2 = SelfModules.Functions.LoadCustomInstance("https://github.com/HollowedOutMods/Doors/blob/main/threat.rbxm?raw=true")
+entityModel:Destroy()
+local entityModel = SelfModules.Functions.LoadCustomInstance("https://github.com/HollowedOutMods/Doors/blob/main/threat.rbxm?raw=true")
+
 -- Get the player's character and humanoid
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local humanoid = character:WaitForChild("Humanoid")
 
+local floor = game:GetService("Workspace").CurrentRooms[lastroom].Parts.Floor.Position
+if typeof(entityModel) == "Instance" and entityModel.ClassName == "Model" then
+    entityModel.PrimaryPart = entityModel.PrimaryPart or entityModel:FindFirstChildWhichIsA("BasePart")
 
-if typeof(entityModel2) == "Instance" and entityModel2.ClassName == "Model" then
-    entityModel2.PrimaryPart = entityModel2.PrimaryPart or entityModel2:FindFirstChildWhichIsA("BasePart")
-    if entityModel2.PrimaryPart then
+    if entityModel.PrimaryPart then
         -- Position
-        entityModel2.PrimaryPart.Position = entityModel.PrimaryPart.Position
+        entityModel.PrimaryPart.Position = entPos
         -- Set the parent of the model to game.Workspace
-        entityModel2.Parent = game.Workspace
+        entityModel.Parent = game.Workspace
 
         entityModel.PrimaryPart.Anchored = true
 
         -- Set the name of the model
-        if entityModel2.Name then
-            entityModel2.Name = "Threat"
+        if entityModel.Name then
+            entityModel.Name = "ThreatJumpscare"
         end
 
-        entityModel2:SetAttribute("IsCustomEntity", true)
-        entityModel2:SetAttribute("NoAI", false)
-        entityModel:Destroy()
-
+        entityModel:SetAttribute("IsCustomEntity", true)
+        entityModel:SetAttribute("NoAI", false)
     end
 end
-
-
---
 local TweenService = game:GetService("TweenService")
 local cmr = game.Workspace.CurrentCamera
 
@@ -330,7 +327,7 @@ camara.Parent = game.Workspace
 cmr.Parent = game.Players.LocalPlayer
 
 -- Get the position of the entityModel
-local pos = entityModel2.PrimaryPart.Position
+local pos = entityModel.PrimaryPart.Position
 
 -- Disable the player's movement
 local OldSpeed = game.Players.LocalPlayer.Character.Humanoid.WalkSpeed
@@ -343,7 +340,10 @@ lookAtTween:Play()
 -- Wait for the tween to finish
 lookAtTween.Completed:Wait()
 task.wait(0.1)
-Hum.Health = 0
+humanoid.Health = 0
+
+--
+end
                         ReSt.GameStats["Player_".. Plr.Name].Total.DeathCause.Value = entityModel.Name
                         
                         if #entityTable.Config.CustomDialog > 0 then
