@@ -339,6 +339,7 @@ local lookAtTween = TweenService:Create(camara, TweenInfo.new(1), {CFrame = CFra
 lookAtTween:Play()
 
 -- Wait for the tween to finish
+entityModel.Jumpscare:Play()
 lookAtTween.Completed:Wait()
 task.wait(0.1)
 humanoid.Health = 0
