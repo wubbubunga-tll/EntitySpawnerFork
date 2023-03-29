@@ -111,8 +111,6 @@ Spawner.createEntity = function(config)
             if config.CustomName then
                 entityModel.Name = config.CustomName
             end
-
-            entityModel:SetAttribute("IsCustomEntity", true)
             entityModel:SetAttribute("NoAI", false)
 
             -- EntityTable
