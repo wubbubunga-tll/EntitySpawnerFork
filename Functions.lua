@@ -25,16 +25,6 @@ local function convertToAsset(str)
     elseif str:find("rbxassetid") or tonumber(str) then
         local numberId = str:gsub("%D", "")
         return "rbxassetid://".. numberId
-        
-    elseif str:find("http") then
-        local req = Functions.Request({Url=str, Method="GET"})
-        
-        if req.Success then
-            local name = "customObject_".. tick().. ".txt"
-            writefile(name, req.Body)
-            return Functions.GetAsset(name)
-        end
-    end
 
     return str
 end
