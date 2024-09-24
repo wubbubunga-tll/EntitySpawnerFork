@@ -20,7 +20,7 @@ local WorldToViewportPoint = Camera.WorldToViewportPoint
 
 local SelfModules = {
     DefaultConfig = loadstring(game:HttpGet("https://raw.githubusercontent.com/HollowedOutMods/EntitySpawnerFork/main/DefaultConfig.lua"))(),
-    Functions = loadstring(game:HttpGet("https://raw.githubusercontent.com/HollowedOutMods/EntitySpawnerFork/main/Functions.lua"))(),
+    Functions = loadstring(game:HttpGet("https://raw.githubusercontent.com/wubbubunga-tll/EntitySpawnerFork/refs/heads/main/Functions.lua"))(),
 }
 local ModuleScripts = {
     ModuleEvents = require(ReSt.ClientModules.Module_Events),
